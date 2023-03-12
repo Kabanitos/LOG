@@ -1,0 +1,32 @@
+---
+
+- name: Добавляем строки в /etc/audit/rules.d/audit.rules
+  ansible.builtin.blockinfile:
+    path: /etc/audit/rules.d/audit.rules
+    block: |
+     -w /etc/nginx/nginx.conf -p wa -k nginx_conf
+     -w /etc/nginx/default.d/ -p wa -k nginx_conf
+
+- name: Утсановка audispd-plugins
+  ansible.builtin.yum:
+    name: audispd-plugins
+
+- name: Замена параметров в /etc/audit/auditd.conf
+  replace:
+    dest: /etc/audit/auditd.conf
+    regexp: 'name_format = NONE'
+    replace: 'name_format = HOSTNAME'
+
+- name: Замена параметров в /etc/audisp/plugins.d/au-remote.conf
+  replace:
+    dest: /etc/audisp/plugins.d/au-remote.conf
+    regexp: 'active = no'
+    replace: 'active = yes'
+
+
+- name: Добавление ipadd сервера в  /etc/audisp/audisp-remote.conf
+  ansible.builtin.lineinfile:
+    path: /etc/audisp/audisp-remote.conf
+    regexp: 'remote_server ='
+    line: remote_server = {{ ip_srv }}
+  notify: Restart auditd

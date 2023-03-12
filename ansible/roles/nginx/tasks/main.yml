@@ -1,0 +1,28 @@
+---
+- name: Установка epel-release
+  ansible.builtin.yum:
+    name: epel-release
+
+- name: Установка nginx
+  ansible.builtin.yum:
+    name: nginx
+    state: latest
+
+- name: Добавление строки в конфигурацию nginx
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    insertafter: 'error_log /var/log/nginx/error.log;'
+    line: 'error_log syslog:server=192.168.56.15:514,tag=nginx_error;'
+
+- name: Добавление строки в конфигурацию nginx
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    insertafter: 'access_log  /var/log/nginx/access.log  main;'
+    line: 'access_log syslog:server=192.168.50.15:514,tag=nginx_access,severity=info combined;'
+  notify: Restart nginx
+
+
+
+
+  
+  

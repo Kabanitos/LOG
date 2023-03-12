@@ -1,0 +1,7 @@
+---
+- name: Отрыть порт TCP 60 в /etc/audit/auditd.conf
+  replace:
+    dest: /etc/audit/auditd.conf
+    regexp: '##tcp_listen_port = 60'
+    replace: 'tcp_listen_port = 60'
+  notify: Restart auditd

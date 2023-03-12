@@ -1,0 +1,40 @@
+- hosts: log 
+  become: yes
+  become_user: root
+  
+  roles:
+      - time
+      - audit-server
+
+- hosts: web
+  become: yes
+  become_user: root
+  
+  roles:
+      - time
+      - nginx
+      - audit-client
+  
+  vars_files:
+    - vars.yml
+
+  handlers:
+  - name: Restart rsyslog
+    ansible.builtin.service:
+      name: rsyslog
+      state: restarted
+
+  - name: Restart chronyd
+    ansible.builtin.service:
+      name: chronyd
+      state: restarted
+
+  - name: Restart nginx
+    ansible.builtin.service:
+      name: nginx
+      state: restarted
+
+  - name: Restart auditd
+    ansible.builtin.service:
+      name: auditd
+      state: restarted
