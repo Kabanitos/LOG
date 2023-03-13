@@ -29,4 +29,6 @@
     path: /etc/audisp/audisp-remote.conf
     regexp: 'remote_server ='
     line: remote_server = {{ ip_srv }}
-  notify: Restart auditd
+
+- name: Restart auditd
+  command: /sbin/service auditd restart

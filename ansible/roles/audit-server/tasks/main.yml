@@ -4,4 +4,6 @@
     dest: /etc/audit/auditd.conf
     regexp: '##tcp_listen_port = 60'
     replace: 'tcp_listen_port = 60'
-  notify: Restart auditd
+
+- name: Restart auditd
+  command: /sbin/service auditd restart

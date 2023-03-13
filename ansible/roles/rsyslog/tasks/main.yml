@@ -31,4 +31,7 @@
       $template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
       *.* ?RemoteLogs
       & ~
-  notify: Restart rsyslog
+- name: Restart rsyslog
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted

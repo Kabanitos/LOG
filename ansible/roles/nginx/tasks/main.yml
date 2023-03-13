@@ -19,7 +19,11 @@
     path: /etc/nginx/nginx.conf
     insertafter: 'access_log  /var/log/nginx/access.log  main;'
     line: 'access_log syslog:server=192.168.50.15:514,tag=nginx_access,severity=info combined;'
-  notify: Restart nginx
+
+- name: Restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
 
 
 
