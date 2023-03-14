@@ -12,14 +12,14 @@
     name: audispd-plugins
 
 - name: Замена параметров в /etc/audit/auditd.conf
-  replace:
-    dest: /etc/audit/auditd.conf
+  ansible.builtin.replace:
+    path: /etc/audit/auditd.conf
     regexp: 'name_format = NONE'
     replace: 'name_format = HOSTNAME'
 
 - name: Замена параметров в /etc/audisp/plugins.d/au-remote.conf
-  replace:
-    dest: /etc/audisp/plugins.d/au-remote.conf
+  ansible.builtin.replace:
+    path: /etc/audisp/plugins.d/au-remote.conf
     regexp: 'active = no'
     replace: 'active = yes'
 
@@ -27,7 +27,7 @@
 - name: Добавление ipadd сервера в  /etc/audisp/audisp-remote.conf
   ansible.builtin.lineinfile:
     path: /etc/audisp/audisp-remote.conf
-    regexp: 'remote_server ='
+    regexp: 'remote_server = $'
     line: remote_server = {{ ip_srv }}
 
 - name: Restart auditd

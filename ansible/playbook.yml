@@ -1,9 +1,11 @@
+
 - hosts: log 
   become: yes
   become_user: root
   
   roles:
       - time
+      - rsyslog
       - audit-server
 
 - hosts: web
